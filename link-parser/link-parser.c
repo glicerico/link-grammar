@@ -167,7 +167,7 @@ static char * fget_input_string(FILE *in, FILE *out, bool check_return)
 *
 **************************************************************************/
 
-static void process_linkage(Linkage linkage, Command_Options* copts)
+static void process_linkage(Linkage linkage, Command_Options* copts, int sentence_num)
 {
 	char * string;
 	ConstituentDisplayStyle mode;
@@ -203,7 +203,7 @@ static void process_linkage(Linkage linkage, Command_Options* copts)
 	}
 	if (copts->display_links)
 	{
-		string = linkage_print_links_and_domains(linkage);
+		string = linkage_print_links_and_domains(linkage, sentence_num);
 		fprintf(stdout, "%s", string);
 		linkage_free_links_and_domains(string);
 	}
@@ -235,19 +235,19 @@ static void print_parse_statistics(Sentence sent, Parse_Options opts)
 		if (sentence_num_linkages_found(sent) >
 			parse_options_get_linkage_limit(opts))
 		{
-			fprintf(stdout, "Found %d linkage%s (%d of %d random " \
+			//fprintf(stdout, "Found %d linkage%s (%d of %d random " \
 					"linkages had no P.P. violations)",
-					sentence_num_linkages_found(sent),
-					sentence_num_linkages_found(sent) == 1 ? "" : "s",
-					sentence_num_valid_linkages(sent),
-					sentence_num_linkages_post_processed(sent));
+					// sentence_num_linkages_found(sent),
+					// sentence_num_linkages_found(sent) == 1 ? "" : "s",
+					// sentence_num_valid_linkages(sent),
+					// sentence_num_linkages_post_processed(sent));
 		}
 		else
 		{
-			fprintf(stdout, "Found %d linkage%s (%d had no P.P. violations)",
-					sentence_num_linkages_post_processed(sent),
-					sentence_num_linkages_post_processed(sent) == 1 ? "" : "s",
-					sentence_num_valid_linkages(sent));
+			//fprintf(stdout, "Found %d linkage%s (%d had no P.P. violations)",
+					// sentence_num_linkages_post_processed(sent),
+					// sentence_num_linkages_post_processed(sent) == 1 ? "" : "s",
+					// sentence_num_valid_linkages(sent));
 		}
 		if (sentence_null_count(sent) > 0)
 		{
@@ -279,7 +279,7 @@ static int auto_next_linkage_test(const char *test)
 }
 
 static const char *process_some_linkages(FILE *in, Sentence sent,
-                                         Command_Options* copts)
+                                         Command_Options* copts, int sentence_num)
 {
 	int i, num_to_query, num_to_display, num_displayed;
 	Linkage linkage;
@@ -373,7 +373,7 @@ static const char *process_some_linkages(FILE *in, Sentence sent,
 			}
 		}
 
-		process_linkage(linkage, copts);
+		process_linkage(linkage, copts, sentence_num);
 		linkage_delete(linkage);
 
 		if (++num_displayed < num_to_display)
@@ -419,7 +419,7 @@ static int there_was_an_error(Label label, Sentence sent, Parse_Options opts)
 
 static void batch_process_some_linkages(Label label,
                                         Sentence sent,
-                                        Command_Options* copts)
+                                        Command_Options* copts, int sentence_num)
 {
 	Parse_Options opts = copts->popts;
 
@@ -676,6 +676,7 @@ int main(int argc, char * argv[])
 	prt_error("Info: Library version %s. Enter \"!help\" for help.\n",
 		linkgrammar_get_version());
 
+	int sentence_num = 1; // initialize num of sentence being processed
 	/* Main input loop */
 	while (true)
 	{
@@ -893,11 +894,11 @@ int main(int argc, char * argv[])
 
 			if (copts->batch_mode)
 			{
-				batch_process_some_linkages(label, sent, copts);
+				batch_process_some_linkages(label, sent, copts, sentence_num);
 			}
 			else
 			{
-				const char *rc = process_some_linkages(input_fh, sent, copts);
+				const char *rc = process_some_linkages(input_fh, sent, copts, sentence_num);
 				if (NULL == rc)
 				{
 					sentence_delete(sent);
@@ -910,6 +911,7 @@ int main(int argc, char * argv[])
 			sentence_delete(sent);
 			sent = NULL;
 		}
+		sentence_num++;
 	}
 
 	if (copts->batch_mode)
@@ -923,6 +925,6 @@ int main(int argc, char * argv[])
 	command_options_delete(copts);
 	dictionary_delete(dict);
 
-	printf ("Bye.\n");
+	//printf ("Bye.\n");
 	return 0;
 }
