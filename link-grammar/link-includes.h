@@ -341,7 +341,7 @@ link_public_api(char *)
 link_public_api(void)
      linkage_free_disjuncts(char *str);
 link_public_api(char *)
-     linkage_print_links_and_domains(const Linkage linkage);
+     linkage_print_links_and_domains(const Linkage linkage, int sentence_num);
 link_public_api(void)
      linkage_free_links_and_domains(char *str);
 link_public_api(char *)

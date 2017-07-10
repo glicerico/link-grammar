@@ -437,7 +437,7 @@ static void batch_process_some_linkages(Label label,
 					break;
 				}
 			}
-			process_linkage(linkage, copts);
+			process_linkage(linkage, copts, sentence_num);
 			linkage_delete(linkage);
 		}
 		fprintf(stdout, "+++++ error %d\n", batch_errors);

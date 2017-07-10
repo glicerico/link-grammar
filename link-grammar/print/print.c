@@ -128,7 +128,7 @@ static void left_append_string(dyn_str * string, const char * s, const char * t)
 	}
 }
 
-static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link)
+static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int sentence_num)
 {
 	WordIdx l, r;
 	//const char *label, *llabel, *rlabel;
@@ -154,7 +154,7 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link)
 	}
 	else
 	{
-		append_string(s, " %d %s", l, lword);
+		append_string(s, "%d %d %s", sentence_num, l, lword);
 		//left_append_string(s, l, " ");
 		//left_append_string(s, lword, "               ");
 	}
@@ -211,13 +211,13 @@ char * linkage_print_links_and_domains(const Linkage linkage, int sentence_num)
 		//dname = linkage_get_link_domain_names(linkage, link);
 		// for (j=0; j<linkage_get_link_num_domains(linkage, link); ++j) {
 		// 	append_string(s, " (%s)", dname[j]);
-		append_string(s, "%d ", sentence_num);
+		//append_string(s, "%d ", sentence_num);
 		// }
 		// for (; j<longest; j++) {
 		// 	dyn_strcat(s, "    ");
 		// }
 		// dyn_strcat(s, "   ");
-		print_a_link(s, linkage, link);
+		print_a_link(s, linkage, link, sentence_num);
 	}
 	//dyn_strcat(s, "END_SENTENCE_MARKER\n");
 	if (linkage_get_violation_name(linkage) != NULL) {
