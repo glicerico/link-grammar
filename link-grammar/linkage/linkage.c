@@ -882,13 +882,19 @@ const char * linkage_get_bare_word(const Linkage linkage, WordIdx w)
 	if (!linkage) return NULL;
 	if (linkage->num_words <= w) return NULL; /* bounds-check */
 
-	const char delimiter = '.';
+	char delimiter = '.';
 	char *separator_ptr = strchr(linkage->word[w], delimiter);
 
 	if(separator_ptr == NULL)
 	{
-	  return linkage->word[w]; // if there is no separator in the word
+		delimiter = '[';
+		separator_ptr = strchr(linkage->word[w], delimiter);
+		if(separator_ptr == NULL)
+		{
+	  		return linkage->word[w]; // if there is no separator in the word
+		}
 	}
+
 	// copy and return word without the suffix
 	int position = separator_ptr - linkage->word[w];
 	char* bare_word = (char*) malloc((position + 1) * sizeof(char));
