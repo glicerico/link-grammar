@@ -875,19 +875,17 @@ const char * linkage_get_word(const Linkage linkage, WordIdx w)
 	return linkage->word[w];
 }
 
-// Need to free the returned value of this function later:
-// the memory pointed to by bare_word
 const char * linkage_get_bare_word(const Linkage linkage, WordIdx w)
 {
 	if (!linkage) return NULL;
 	if (linkage->num_words <= w) return NULL; /* bounds-check */
 
-	char delimiter = '.';
+	char delimiter = '[';
 	char *separator_ptr = strchr(linkage->word[w], delimiter);
 
 	if(separator_ptr == NULL)
 	{
-		delimiter = '[';
+		delimiter = '.';
 		separator_ptr = strchr(linkage->word[w], delimiter);
 		if(separator_ptr == NULL)
 		{

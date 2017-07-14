@@ -152,6 +152,10 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int s
 		return;
 		//left_append_string(s, RIGHT_WALL_DISPLAY, "               ");
 	}
+	else if (r == (linkage_get_num_words(linkage) - 1))
+	{
+		return;
+	}
 	else
 	{
 		append_string(s, "%d %d %s", sentence_num, l, lword);
@@ -194,8 +198,12 @@ char * linkage_print_links_and_domains(const Linkage linkage, int sentence_num)
 	int N_links = linkage_get_num_links(linkage);
 	dyn_str * s = dyn_str_new();
 	//const char ** dname;
-	//dyn_strcat(s, "BEGIN_SENTENCE_MARKER\n");
 
+	// For debugging
+	// for (int iWords = 0; iWords < linkage->num_words; iWords++){
+	// 	append_string(s, "%s ", linkage->word[iWords]);
+	// }
+	// append_string(s, "\n");
 	longest = 0;
 	for (link=0; link<N_links; link++)
 	{
@@ -219,7 +227,6 @@ char * linkage_print_links_and_domains(const Linkage linkage, int sentence_num)
 		// dyn_strcat(s, "   ");
 		print_a_link(s, linkage, link, sentence_num);
 	}
-	//dyn_strcat(s, "END_SENTENCE_MARKER\n");
 	if (linkage_get_violation_name(linkage) != NULL) {
 		// dyn_strcat(s, "P.P. violations:\n");
 		// append_string(s, "        %s\n\n", linkage_get_violation_name(linkage));
