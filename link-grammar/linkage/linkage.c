@@ -881,12 +881,12 @@ const char * linkage_get_bare_word(const Linkage linkage, WordIdx w)
 	if (linkage->num_words <= w) return NULL; /* bounds-check */
 
 	char delimiter = '[';
-	char *separator_ptr = strchr(linkage->word[w], delimiter);
+	char *separator_ptr = strrchr(linkage->word[w], delimiter);
 
 	if(separator_ptr == NULL)
 	{
 		delimiter = '.';
-		separator_ptr = strchr(linkage->word[w], delimiter);
+		separator_ptr = strrchr(linkage->word[w], delimiter);
 		if(separator_ptr == NULL)
 		{
 	  		return linkage->word[w]; // if there is no separator in the word
