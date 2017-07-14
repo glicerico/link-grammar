@@ -26,7 +26,6 @@ link-grammar-*.tar.gz
 link-grammar-*.tar.gz.asc
 link-grammar-*.tar.gz.md5
 link-parser/link-parser
-lg_*_wrap.cc
 .lg_history
 Makefile.in
 Makefile
