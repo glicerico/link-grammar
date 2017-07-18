@@ -131,26 +131,20 @@ static void left_append_string(dyn_str * string, const char * s, const char * t)
 static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int sentence_num)
 {
 	WordIdx l, r;
-	//const char *label, *llabel, *rlabel;
-	const char *lword, *rword;
+	char *lword, *rword;
 
 	l      = linkage_get_link_lword(linkage, link);
 	r      = linkage_get_link_rword(linkage, link);
-	//label  = linkage_get_link_label(linkage, link);
-	//llabel = linkage_get_link_llabel(linkage, link);
-	//rlabel = linkage_get_link_rlabel(linkage, link);
 	lword = linkage_get_bare_word(linkage, l);
 	rword = linkage_get_bare_word(linkage, r);
 
 	if (l == 0)
 	{
 		return;
-		//left_append_string(s, LEFT_WALL_DISPLAY, "               ");
 	}
 	else if (l == (linkage_get_num_words(linkage) - 1))
 	{
 		return;
-		//left_append_string(s, RIGHT_WALL_DISPLAY, "               ");
 	}
 	else if (r == (linkage_get_num_words(linkage) - 1))
 	{
@@ -159,31 +153,10 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int s
 	else
 	{
 		append_string(s, "%d %d %s", sentence_num, l, lword);
-		//left_append_string(s, l, " ");
-		//left_append_string(s, lword, "               ");
 	}
-
-	/* XXX FIXME -- the space allocated to a link name should depend
-	 * on the longest link-name in the sentence! */
-	// left_append_string(s, llabel, "           ");
-	// if (DEPT_CHR == llabel[0])
-	// 	dyn_strcat(s, "   <---");
-	// else if (HEAD_CHR == llabel[0])
-	// 	dyn_strcat(s, "   >---");
-	// else
-	// 	dyn_strcat(s, "   ----");
-
-	// left_append_string(s, label, "-----");
-	// if (DEPT_CHR == rlabel[0])
-	// 	dyn_strcat(s, "->  ");
-	// else if (HEAD_CHR == rlabel[0])
-	// 	dyn_strcat(s, "-<  ");
-	// else
-	// 	dyn_strcat(s, "--  ");
-	// left_append_string(s, rlabel, "           ");
 	append_string(s, " %d %s\n", r, rword);
-	//free(lword);
-	//free(rword);
+	free(lword);
+	free(rword);
 }
 
 
@@ -197,39 +170,20 @@ char * linkage_print_links_and_domains(const Linkage linkage, int sentence_num)
 	int link, longest;//, j;
 	int N_links = linkage_get_num_links(linkage);
 	dyn_str * s = dyn_str_new();
-	//const char ** dname;
 
-	// For debugging
-	// for (int iWords = 0; iWords < linkage->num_words; iWords++){
-	// 	append_string(s, "%s ", linkage->word[iWords]);
-	// }
-	// append_string(s, "\n");
 	longest = 0;
 	for (link=0; link<N_links; link++)
 	{
-		// if (linkage_get_link_lword(linkage, link) == SIZE_MAX) continue;
 		assert (linkage_get_link_lword(linkage, link) < SIZE_MAX);
 		if (linkage_get_link_num_domains(linkage, link) > longest)
 			longest = linkage_get_link_num_domains(linkage, link);
 	}
 	for (link=0; link<N_links; link++)
 	{
-		// if (linkage_get_link_lword(linkage, link) == SIZE_MAX) continue;
 		assert (linkage_get_link_lword(linkage, link) < SIZE_MAX);
-		//dname = linkage_get_link_domain_names(linkage, link);
-		// for (j=0; j<linkage_get_link_num_domains(linkage, link); ++j) {
-		// 	append_string(s, " (%s)", dname[j]);
-		//append_string(s, "%d ", sentence_num);
-		// }
-		// for (; j<longest; j++) {
-		// 	dyn_strcat(s, "    ");
-		// }
-		// dyn_strcat(s, "   ");
 		print_a_link(s, linkage, link, sentence_num);
 	}
 	if (linkage_get_violation_name(linkage) != NULL) {
-		// dyn_strcat(s, "P.P. violations:\n");
-		// append_string(s, "        %s\n\n", linkage_get_violation_name(linkage));
 	}
 
 	return dyn_str_take(s);
