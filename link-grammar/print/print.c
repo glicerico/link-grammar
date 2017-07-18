@@ -131,30 +131,16 @@ static void left_append_string(dyn_str * string, const char * s, const char * t)
 static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int sentence_num)
 {
 	WordIdx l, r;
-	char *lword, *rword;
 
 	l      = linkage_get_link_lword(linkage, link);
 	r      = linkage_get_link_rword(linkage, link);
-	lword = linkage_get_bare_word(linkage, l);
-	rword = linkage_get_bare_word(linkage, r);
+	char * lword = linkage_get_bare_word(linkage, l);
+	char * rword = linkage_get_bare_word(linkage, r);
 
-	if (l == 0)
-	{
-		return;
-	}
-	else if (l == (linkage_get_num_words(linkage) - 1))
-	{
-		return;
-	}
-	else if (r == (linkage_get_num_words(linkage) - 1))
-	{
-		return;
-	}
-	else
-	{
+	if (l != 0 && l != (linkage_get_num_words(linkage) - 1) && r != (linkage_get_num_words(linkage) - 1)) {
 		append_string(s, "%d %d %s", sentence_num, l, lword);
+	    append_string(s, " %d %s\n", r, rword);
 	}
-	append_string(s, " %d %s\n", r, rword);
 	free(lword);
 	free(rword);
 }
@@ -167,7 +153,7 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int s
  */
 char * linkage_print_links_and_domains(const Linkage linkage, int sentence_num)
 {
-	int link, longest;//, j;
+	int link, longest;
 	int N_links = linkage_get_num_links(linkage);
 	dyn_str * s = dyn_str_new();
 
