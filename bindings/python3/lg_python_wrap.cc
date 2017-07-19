@@ -5245,7 +5245,7 @@ SWIGINTERN PyObject *_wrap_linkage_print_links_and_domains(PyObject *SWIGUNUSEDP
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   char *result = 0 ;
-  int sentence_num = 1; // constant number for now.
+  int sentence_num = 1; // default for now
   
   if (!PyArg_ParseTuple(args,(char *)"O:linkage_print_links_and_domains",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Linkage_s, 0 |  0 );

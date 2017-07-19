@@ -134,17 +134,12 @@ static void print_a_link(dyn_str * s, const Linkage linkage, LinkIdx link, int s
 
 	l      = linkage_get_link_lword(linkage, link);
 	r      = linkage_get_link_rword(linkage, link);
-	char * lword = linkage_get_bare_word(linkage, l);
-	char * rword = linkage_get_bare_word(linkage, r);
 
 	if (l != 0 && l != (linkage_get_num_words(linkage) - 1) && r != (linkage_get_num_words(linkage) - 1)) {
-		append_string(s, "%d %d %s", sentence_num, l, lword);
-	    append_string(s, " %d %s\n", r, rword);
+		append_string(s, "%d %zd %s", sentence_num, l, linkage->wg_path_display[l]->subword);
+	    append_string(s, " %zd %s\n", r, linkage->wg_path_display[r]->subword);
 	}
-	free(lword);
-	free(rword);
 }
-
 
 /**
  * To the left of each link, print the sequence of domains it is in.
