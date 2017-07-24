@@ -676,7 +676,7 @@ int main(int argc, char * argv[])
 	prt_error("Info: Library version %s. Enter \"!help\" for help.\n",
 		linkgrammar_get_version());
 
-	int sentence_num = 1; // initialize num of sentence being processed
+	int sentence_num = 180268; // initialize num of sentence being processed
 	/* Main input loop */
 	while (true)
 	{
